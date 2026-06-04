@@ -1,0 +1,86 @@
+\documentclass{book}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\title{Physics Notes from Action Principles}
+\author{Srikrishnaa Vadivel}
+\date{}
+\newcommand{\D}{\mathcal{D}}
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{Generating Functionals}
+A unified view starts with a configuration $\phi$ and an action $S[\phi]$.
+The quantum generating functional is
+\[
+  Z[J]=\int \D\phi\,\exp\left(\frac{i}{\hbar}S[\phi]+\frac{i}{\hbar}\int J\phi\,d^dx\right).
+\]
+Classical equations follow from stationary phase:
+$\delta S/\delta\phi=0$. Correlators follow by source differentiation:
+\[
+  \langle \phi(x_1)\cdots\phi(x_n)\rangle =
+  \frac{1}{Z[0]}\left(\frac{\hbar}{i}\right)^n
+  \frac{\delta^n Z}{\delta J(x_1)\cdots\delta J(x_n)}\bigg|_{J=0}.
+\]
+
+\chapter{Classical Mechanics and Statistical Mechanics}
+For generalized coordinates $q^i(t)$,
+\[
+  S[q]=\int_{t_0}^{t_1}L(q,\dot q,t)dt,\qquad
+  \frac{d}{dt}\frac{\partial L}{\partial \dot q^i}-\frac{\partial L}{\partial q^i}=0.
+\]
+Imaginary time $t=-i\tau$ turns oscillatory weights into Boltzmann weights:
+\[
+  Z(\beta)=\operatorname{Tr}e^{-\beta H}
+  =\int_{\phi(\beta\hbar)=\phi(0)}\D\phi\,e^{-S_E[\phi]/\hbar}.
+\]
+This connects quantum amplitudes, finite-temperature field theory, and
+statistical thermodynamics.
+
+\chapter{Electromagnetism and Relativity}
+Electromagnetism uses $A_\mu$ and $F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu$:
+\[
+  S_{\text{EM}}=\int d^4x\left(-\frac14F_{\mu\nu}F^{\mu\nu}-J_\mu A^\mu\right).
+\]
+Variation gives $\partial_\mu F^{\mu\nu}=J^\nu$ plus the Bianchi identity
+$\partial_{[\lambda}F_{\mu\nu]}=0$. Special relativity is encoded by the
+Minkowski interval $ds^2=\eta_{\mu\nu}dx^\mu dx^\nu$.
+
+\chapter{General Relativity}
+The Einstein--Hilbert action is
+\[
+  S_{\text{EH}}=\frac{1}{16\pi G}\int d^4x\sqrt{-g}(R-2\Lambda)+S_m[g,\psi].
+\]
+Metric variation gives
+\[
+  R_{\mu\nu}-\frac12Rg_{\mu\nu}+\Lambda g_{\mu\nu}=8\pi G T_{\mu\nu}.
+\]
+The geometry is determined by the Levi-Civita connection and curvature tensor,
+while matter enters through $T_{\mu\nu}=-(2/\sqrt{-g})\delta S_m/\delta g^{\mu\nu}$.
+
+\chapter{Quantum Field Theory}
+QED has
+\[
+  \mathcal{L}_{\text{QED}}=-\frac14F_{\mu\nu}F^{\mu\nu}
+  +\bar\psi(i\gamma^\mu D_\mu-m)\psi,\quad D_\mu=\partial_\mu+ieA_\mu.
+\]
+QCD replaces $U(1)$ by $SU(3)$:
+\[
+  \mathcal{L}_{\text{QCD}}=-\frac14G^a_{\mu\nu}G^{a\mu\nu}
+  +\bar q(i\gamma^\mu D_\mu-m)q.
+\]
+The Standard Model is based on $SU(3)_C\times SU(2)_L\times U(1)_Y$ with a
+Higgs field whose vacuum expectation value breaks electroweak symmetry.
+
+\chapter{Strings and Effective Theories}
+The Polyakov action for a string embedding $X^\mu(\sigma,\tau)$ is
+\[
+  S_P=-\frac{T}{2}\int d^2\sigma\sqrt{-h}\,h^{ab}\partial_aX^\mu\partial_bX_\mu.
+\]
+At low energies, effective field theories organize all symmetry-compatible
+operators by dimension, keeping predictive control through a cutoff scale
+$\Lambda$.
+
+\end{document}
