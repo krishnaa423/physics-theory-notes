@@ -1,86 +1,396 @@
-\documentclass{book}
-\usepackage{amsmath,amssymb,amsthm}
-\usepackage[margin=1in]{geometry}
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{mathtools}
+\usepackage{physics}
 \usepackage{hyperref}
-\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
-\title{Physics Notes from Action Principles}
+\usepackage{xcolor}
+
+\hypersetup{
+colorlinks=true,
+linkcolor=blue,
+urlcolor=blue,
+citecolor=blue
+}
+
+\setcounter{tocdepth}{2}
+
+\title{Physics Theory Compendium}
 \author{Srikrishnaa Vadivel}
 \date{}
-\newcommand{\D}{\mathcal{D}}
+
+\newcommand{\Lag}{\mathcal{L}}
+\newcommand{\Ham}{\mathcal{H}}
+\newcommand{\cD}{\mathcal{D}}
+
 \begin{document}
+
 \maketitle
 \tableofcontents
 
-\chapter{Generating Functionals}
-A unified view starts with a configuration $\phi$ and an action $S[\phi]$.
-The quantum generating functional is
+\section{Orientation}
+This note organizes physics around a common template: choose the fields,
+symmetries, and action, derive equations from stationarity, identify conserved
+currents through symmetry, and pass to Hamiltonian or quantum formalisms when
+needed. The point is not to list isolated formulas, but to show how classical
+mechanics, field theory, relativity, gauge theory, and continuum models fit
+inside one variational language.
+
+\section{Universal Variational Formulation}
+\subsection{Fields and Action}
+The starting object is a collection of fields
 \[
-  Z[J]=\int \D\phi\,\exp\left(\frac{i}{\hbar}S[\phi]+\frac{i}{\hbar}\int J\phi\,d^dx\right).
+u^\alpha(x),
+\qquad
+x=(x^0,x^1,\dots,x^d),
 \]
-Classical equations follow from stationary phase:
-$\delta S/\delta\phi=0$. Correlators follow by source differentiation:
+defined over spacetime or over a configuration domain. Their dynamics are
+encoded by a Lagrangian density
 \[
-  \langle \phi(x_1)\cdots\phi(x_n)\rangle =
-  \frac{1}{Z[0]}\left(\frac{\hbar}{i}\right)^n
-  \frac{\delta^n Z}{\delta J(x_1)\cdots\delta J(x_n)}\bigg|_{J=0}.
+\Lag=\Lag(x,u,u_J),
+\]
+where $u_J$ denotes derivatives of the fields. The action is
+\[
+S[u]=\int_\Omega \Lag(x,u,u_J)\,dx.
 \]
 
-\chapter{Classical Mechanics and Statistical Mechanics}
-For generalized coordinates $q^i(t)$,
+\subsection{Stationary Action and Field Equations}
+Physical equations appear by requiring the action to be stationary:
 \[
-  S[q]=\int_{t_0}^{t_1}L(q,\dot q,t)dt,\qquad
-  \frac{d}{dt}\frac{\partial L}{\partial \dot q^i}-\frac{\partial L}{\partial q^i}=0.
+\boxed{\delta S=0.}
 \]
-Imaginary time $t=-i\tau$ turns oscillatory weights into Boltzmann weights:
+For local theories this yields the Euler--Lagrange system
 \[
-  Z(\beta)=\operatorname{Tr}e^{-\beta H}
-  =\int_{\phi(\beta\hbar)=\phi(0)}\D\phi\,e^{-S_E[\phi]/\hbar}.
+\boxed{
+\sum_J (-D)_J \frac{\partial \Lag}{\partial u^\alpha_J}=0,
+}
 \]
-This connects quantum amplitudes, finite-temperature field theory, and
-statistical thermodynamics.
+where $D_J$ is the total derivative associated with the multi-index $J$. This
+single schema includes Newtonian mechanics, Maxwell theory, Yang--Mills theory,
+general relativity, and continuum mechanics.
 
-\chapter{Electromagnetism and Relativity}
-Electromagnetism uses $A_\mu$ and $F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu$:
+\subsection{Canonical Momenta and Hamiltonian Density}
+When time is separated from space, the canonical momentum is
 \[
-  S_{\text{EM}}=\int d^4x\left(-\frac14F_{\mu\nu}F^{\mu\nu}-J_\mu A^\mu\right).
+\pi_\alpha=\frac{\partial \Lag}{\partial(\partial_t u^\alpha)}.
 \]
-Variation gives $\partial_\mu F^{\mu\nu}=J^\nu$ plus the Bianchi identity
-$\partial_{[\lambda}F_{\mu\nu]}=0$. Special relativity is encoded by the
-Minkowski interval $ds^2=\eta_{\mu\nu}dx^\mu dx^\nu$.
+The Hamiltonian density and Hamiltonian are then
+\[
+\Ham=\pi_\alpha \partial_t u^\alpha-\Lag,
+\qquad
+H=\int \Ham\,dx.
+\]
+This reframes dynamics as evolution on phase space and becomes the bridge to
+canonical quantization and statistical mechanics.
 
-\chapter{General Relativity}
-The Einstein--Hilbert action is
+\subsection{Noether's Theorem}
+Continuous symmetries generate conserved currents:
 \[
-  S_{\text{EH}}=\frac{1}{16\pi G}\int d^4x\sqrt{-g}(R-2\Lambda)+S_m[g,\psi].
+\partial_\mu J^\mu=0.
 \]
-Metric variation gives
+The corresponding conserved quantity is
 \[
-  R_{\mu\nu}-\frac12Rg_{\mu\nu}+\Lambda g_{\mu\nu}=8\pi G T_{\mu\nu}.
+Q=\int J^0\,d^3x.
 \]
-The geometry is determined by the Levi-Civita connection and curvature tensor,
-while matter enters through $T_{\mu\nu}=-(2/\sqrt{-g})\delta S_m/\delta g^{\mu\nu}$.
+Time translation gives energy, spatial translations give momentum, rotations
+give angular momentum, and gauge symmetry constrains admissible interactions.
 
-\chapter{Quantum Field Theory}
-QED has
+\section{Quantum and Statistical Formulations}
+\subsection{Generating Functionals}
+The quantum theory of a field is encoded by the generating functional
 \[
-  \mathcal{L}_{\text{QED}}=-\frac14F_{\mu\nu}F^{\mu\nu}
-  +\bar\psi(i\gamma^\mu D_\mu-m)\psi,\quad D_\mu=\partial_\mu+ieA_\mu.
+\boxed{
+Z[J]=\int \cD u\,
+\exp\left(
+iS[u]+i\int J_\alpha u^\alpha\,dx
+\right).
+}
 \]
-QCD replaces $U(1)$ by $SU(3)$:
+From it one obtains the connected functional
 \[
-  \mathcal{L}_{\text{QCD}}=-\frac14G^a_{\mu\nu}G^{a\mu\nu}
-  +\bar q(i\gamma^\mu D_\mu-m)q.
+W[J]=-i\log Z[J],
 \]
-The Standard Model is based on $SU(3)_C\times SU(2)_L\times U(1)_Y$ with a
-Higgs field whose vacuum expectation value breaks electroweak symmetry.
+the effective action
+\[
+\Gamma[u]=W[J]-\int J_\alpha u^\alpha\,dx,
+\qquad
+u^\alpha=\frac{\delta W}{\delta J_\alpha},
+\]
+and correlation functions
+\[
+\boxed{
+\left< u(x_1)\cdots u(x_n)\right>
+=
+\frac{1}{Z}
+\frac{\delta^n Z}{i^n\delta J(x_1)\cdots\delta J(x_n)}
+\Bigg|_{J=0}.
+}
+\]
 
-\chapter{Strings and Effective Theories}
-The Polyakov action for a string embedding $X^\mu(\sigma,\tau)$ is
+\subsection{Imaginary Time and Statistical Mechanics}
+After Wick rotation, oscillatory amplitudes become exponential weights. This
+connects quantum field theory with equilibrium statistical mechanics and shows
+why the Hamiltonian controls both time evolution and thermodynamic ensembles.
+
+\section{Classical Mechanics}
+\subsection{Finite-Dimensional Configuration Spaces}
+For generalized coordinates $q(t)$, the action is
 \[
-  S_P=-\frac{T}{2}\int d^2\sigma\sqrt{-h}\,h^{ab}\partial_aX^\mu\partial_bX_\mu.
+S[q]=\int L(q,\dot q,t)\,dt,
+\qquad
+L=T-V.
 \]
-At low energies, effective field theories organize all symmetry-compatible
-operators by dimension, keeping predictive control through a cutoff scale
-$\Lambda$.
+The Euler--Lagrange equation becomes
+\[
+\frac{d}{dt}\frac{\partial L}{\partial \dot q}
+-\frac{\partial L}{\partial q}=0.
+\]
+This is the prototype for all later field equations: kinetic structure minus
+potential or interaction structure, varied against admissible trajectories.
+
+\subsection{Hamilton's Equations}
+With canonical momentum
+\[
+p=\frac{\partial L}{\partial \dot q},
+\]
+the Hamiltonian is
+\[
+H(q,p,t)=p\dot q-L,
+\]
+and motion is rewritten as
+\[
+\dot q=\frac{\partial H}{\partial p},
+\qquad
+\dot p=-\frac{\partial H}{\partial q}.
+\]
+This makes symplectic structure explicit and prepares the route to both
+canonical quantization and transport theory.
+
+\section{Relativity}
+\subsection{Special Relativity}
+The invariant interval is
+\[
+ds^2=\eta_{\mu\nu}\,dx^\mu dx^\nu.
+\]
+For a free relativistic particle,
+\[
+S=-m\int ds.
+\]
+Lorentz invariance forces space and time to be treated as parts of a unified
+geometric object, and field equations must respect this invariance.
+
+\subsection{General Relativity}
+The gravitational field is the metric $g_{\mu\nu}$. Its action is the
+Einstein--Hilbert functional
+\[
+\boxed{
+S=\frac{1}{16\pi G}\int R\sqrt{-g}\,d^4x.
+}
+\]
+Equivalently, the Lagrangian density is
+\[
+\boxed{
+\Lag=\frac{R}{16\pi G}\sqrt{-g}.
+}
+\]
+Variation with respect to the metric gives Einstein's equations
+\[
+R_{\mu\nu}-\frac12 Rg_{\mu\nu}=8\pi G\,T_{\mu\nu}.
+\]
+Here geometry is dynamical: curvature is not a background ingredient but the
+field itself.
+
+\section{Classical Field Theories}
+\subsection{Electromagnetism}
+The electromagnetic potential is $A_\mu$, with field tensor
+\[
+F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu.
+\]
+The Lagrangian density is
+\[
+\boxed{
+\Lag=-\frac14 F_{\mu\nu}F^{\mu\nu}-J^\mu A_\mu.
+}
+\]
+Variation gives Maxwell's equations with sources, while the antisymmetry of
+$F_{\mu\nu}$ produces the Bianchi identity automatically.
+
+\subsection{Scalar Fields}
+For a real Klein--Gordon field $\phi$,
+\[
+\boxed{
+\Lag=\frac12 \partial_\mu\phi\,\partial^\mu\phi-\frac12 m^2\phi^2.
+}
+\]
+The resulting equation,
+\[
+(\Box+m^2)\phi=0,
+\]
+is the relativistic prototype for linear wave propagation with mass.
+
+\subsection{Spinor Fields}
+For a Dirac spinor $\psi$,
+\[
+\boxed{
+\Lag=\bar\psi(i\gamma^\mu\partial_\mu-m)\psi.
+}
+\]
+This first-order Lagrangian captures relativistic fermions and makes spin and
+antiparticle structure intrinsic rather than added by hand.
+
+\subsection{Nonrelativistic Quantum Fields}
+For a Schr\"odinger field $\psi(\mathbf r,t)$,
+\[
+\boxed{
+\Lag=
+i\psi^*\partial_t\psi
+-\frac{1}{2m}\abs{\nabla\psi}^2
+-V\abs{\psi}^2.
+}
+\]
+This is the field-theoretic form of the Schr\"odinger equation and a natural
+entry point for many-body theory and condensed matter models.
+
+\section{Gauge Theories}
+\subsection{Quantum Electrodynamics}
+For fields $(\psi,A_\mu)$, the covariant derivative is
+\[
+D_\mu=\partial_\mu+ieA_\mu,
+\]
+and the QED Lagrangian is
+\[
+\boxed{
+\Lag=
+\bar\psi(i\gamma^\mu D_\mu-m)\psi
+-\frac14 F_{\mu\nu}F^{\mu\nu}.
+}
+\]
+Gauge symmetry determines the interaction term and ties charge conservation to
+local phase invariance.
+
+\subsection{Yang--Mills Theory}
+For a nonabelian gauge field $A_\mu^a$,
+\[
+F_{\mu\nu}^a
+=
+\partial_\mu A_\nu^a
+-\partial_\nu A_\mu^a
++gf^{abc}A_\mu^b A_\nu^c.
+\]
+Its pure gauge Lagrangian is
+\[
+\boxed{
+\Lag=-\frac14 F_{\mu\nu}^a F^{a\mu\nu}.
+}
+\]
+The extra commutator term encodes gauge self-interaction, which is absent in
+electromagnetism.
+
+\subsection{Quantum Chromodynamics and the Standard Model}
+QCD uses the gauge group $SU(3)$ with quark and gluon fields:
+\[
+\boxed{
+\Lag=
+\bar\psi(i\gamma^\mu D_\mu-m)\psi
+-\frac14 F_{\mu\nu}^a F^{a\mu\nu}.
+}
+\]
+The Standard Model unifies the gauge sectors through
+\[
+SU(3)\times SU(2)\times U(1),
+\]
+with total Lagrangian
+\[
+\boxed{
+\Lag=
+\Lag_{\mathrm{Gauge}}
++\Lag_{\mathrm{Fermion}}
++\Lag_{\mathrm{Higgs}}
++\Lag_{\mathrm{Yukawa}}.
+}
+\]
+This is a clean example of the general philosophy: specify fields, symmetry,
+and local invariant terms, then derive all equations and conserved quantities.
+
+\section{Continuum Physics}
+\subsection{Continuum Mechanics}
+For a displacement field $u(x)$, the deformation gradient is
+\[
+F=I+\nabla u.
+\]
+A representative Lagrangian density is
+\[
+\boxed{
+\Lag=T-W(F),
+}
+\qquad
+T=\frac12 \rho \dot u^2.
+\]
+This packages elasticity and nonlinear material response into the same action
+framework used in particle and field theory.
+
+\subsection{Fluid Mechanics}
+For density $\rho$ and velocity $\mathbf v$,
+\[
+\boxed{
+\Lag=\frac12 \rho v^2-\varepsilon(\rho).
+}
+\]
+With suitable constraints or auxiliary potentials, this variational structure
+recovers continuity and momentum balance equations.
+
+\subsection{Linear Elasticity}
+The strain tensor is
+\[
+\varepsilon_{ij}=\frac12(\partial_i u_j+\partial_j u_i),
+\]
+and Hooke's law reads
+\[
+\sigma_{ij}=C_{ijkl}\varepsilon_{kl}.
+\]
+This is the small-deformation limit of the broader continuum framework above.
+
+\section{Extended Theories}
+\subsection{String Theory}
+For a worldsheet embedding $X^\mu(\sigma,\tau)$, the Polyakov action is
+\[
+\boxed{
+S=
+-\frac{T}{2}\int d^2\sigma\,
+\sqrt{-h}\,h^{ab}\partial_aX^\mu\partial_bX_\mu.
+}
+\]
+The dynamical variable is no longer a point trajectory or spacetime field, but
+a map from a two-dimensional worldsheet into spacetime.
+
+\subsection{Effective Viewpoint}
+Even when a theory is not fundamental, the variational language still applies.
+Effective theories collect all symmetry-compatible operators at a chosen scale,
+with the dominant terms defining the leading physics and higher-order terms
+recording controlled corrections.
+
+\section{Unified View}
+Across these examples, a physical theory is characterized by
+\[
+\boxed{
+\begin{aligned}
+&\text{Configuration space}, \\
+&\text{fields } u^\alpha, \\
+&\text{symmetry group}, \\
+&\text{Lagrangian density } \Lag, \\
+&\text{action } S, \\
+&\delta S=0, \\
+&\text{Euler--Lagrange equations}, \\
+&\text{Noether currents}, \\
+&\text{Hamiltonian } H, \\
+&Z[J], \\
+&\text{correlation functions.}
+\end{aligned}
+}
+\]
+That common structure is what makes it possible to read mechanics, field
+theory, gravity, and continuum models as different realizations of one
+mathematical engine rather than disconnected subjects.
 
 \end{document}
